@@ -1,7 +1,7 @@
 from channels.layers import get_channel_layer
 
 def send_msg(sender, receiver, content):
-    await get_channel_layer().send(receiver, {
+    get_channel_layer().send(receiver, {
         "type": "chat.message",
         "message": content,
     })
