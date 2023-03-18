@@ -9,12 +9,17 @@
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     {{ chat_name|json_script:"chat-name" }}
     <script>
         const chatName = JSON.parse(document.getElementById('chat-name').textContent);
         const wsUrl = 'ws://' + window.location.host + '/ws/aio/' + chatName + '/';
 
         let chatSocket = new WebSocket(wsUrl);
+        chatSocket.send(JSON.stringify({
+            'method': 'set_user',
+            'user': Cookies.get('user')
+        }));
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
@@ -24,6 +29,10 @@
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
             chatSocket = new WebSocket(wsUrl);
+            chatSocket.send(JSON.stringify({
+                'method': 'set_user',
+                'user': Cookies.get('user')
+            }));
             console.log('Chat socket reconnect success!')
         };
 
@@ -38,6 +47,7 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
+                'from': Cookies.get('user'),
                 'to': chatName,
                 'message': message,
             }));

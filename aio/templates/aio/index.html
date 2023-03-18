@@ -5,12 +5,20 @@
     <title>Chat</title>
 </head>
 <body>
+    Who are you?<br>
+    <input id="me-input" type="text" size="100"><br>
     Who would you like to chat with?<br>
     <input id="chat-name-input" type="text" size="100"><br>
     <input id="chat-name-submit" type="button" value="Enter">
 
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script>
-        document.querySelector('#chat-name-input').focus();
+        document.querySelector('#me-input').focus();
+        document.querySelector('#me-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-name-input').focus();
+            }
+        };
         document.querySelector('#chat-name-input').onkeyup = function(e) {
             if (e.keyCode === 13) {  // enter, return
                 document.querySelector('#chat-name-submit').click();
@@ -18,7 +26,9 @@
         };
 
         document.querySelector('#chat-name-submit').onclick = function(e) {
+            var userName = document.querySelector('#me-input').value;
             var chatName = document.querySelector('#chat-name-input').value;
+            Cookies.set('user', userName);
             window.location.pathname = '/aio/' + chatName + '/';
         };
     </script>
