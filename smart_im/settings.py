@@ -31,13 +31,14 @@ ALLOWED_HOSTS = ['119.28.136.240']
 # Application definition
 
 INSTALLED_APPS = [
+    'aio',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
 ]
 
 MIDDLEWARE = [
