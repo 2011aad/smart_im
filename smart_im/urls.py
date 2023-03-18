@@ -19,6 +19,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('aio/', include('aio.urls'))
+    path('aio/', include('aio.urls')),
     path('admin/', admin.site.urls),
 ]
