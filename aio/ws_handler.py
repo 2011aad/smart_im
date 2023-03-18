@@ -22,9 +22,10 @@ class AioWsConsumer(WebsocketConsumer):
 
         print("channel name: " + self.channel_name)
         receiver_channel_name = cache.get('channel_name_' + json_data["to"])
-        async_to_sync(self.channel_layer.send)(receiver_channel_name,
-            {"type": "chat_message", "message": json_data["message"]}
-        )
+        if receiver_channel_name is not None and len(receiver_channel_name) > 0:
+            async_to_sync(self.channel_layer.send)(receiver_channel_name,
+                {"type": "chat_message", "message": json_data["message"]}
+            )
         self.send(text_data = json.dumps({"message": "message sent to " + json_data["to"] + ": " + json_data["message"]}))
 
     def set_user(self, user):
@@ -32,4 +33,4 @@ class AioWsConsumer(WebsocketConsumer):
         cache.set('channel_name_' + user, self.channel_name)
 
     def chat_message(self, event):
-        self.send(text_data = event["message"])
+        self.send(text_data = json.dumps({"message": event["message"]}))

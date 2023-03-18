@@ -32,10 +32,6 @@
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
             chatSocket = new WebSocket(wsUrl);
-            chatSocket.send(JSON.stringify({
-                'method': 'set_user',
-                'user': Cookies.get('user')
-            }));
             console.log('Chat socket reconnect success!')
         };
 
