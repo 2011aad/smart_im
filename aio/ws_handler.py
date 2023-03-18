@@ -3,8 +3,6 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 
-from . import msg_sender
-
 
 class AioWsConsumer(WebsocketConsumer):
     def connect(self):
@@ -23,7 +21,10 @@ class AioWsConsumer(WebsocketConsumer):
                 return
 
         print("channel name: " + self.channel_name)
-        async_to_sync(msg_sender.send_msg)(self.channel_name, json_data["to"], json_data["message"])
+        receiver_channel_name = cache.get('channel_name_' + json_data["to"])
+        async_to_sync(self.channel_layer.send)(receiver_channel_name,
+            {"type": "chat_message", "message": json_data["message"]}
+        )
         self.send(text_data = json.dumps({"message": "message sent to " + json_data["to"] + ": " + json_data["message"]}))
 
     def set_user(self, user):
