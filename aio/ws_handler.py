@@ -28,6 +28,7 @@ class AioWsConsumer(WebsocketConsumer):
         self.send(text_data = json.dumps({"message": "message sent to " + json_data["to"] + ": " + json_data["message"]}))
 
     def set_user(self, user):
+        print('set user: ' + user + 'with channel_name: ' + self.channel_name)
         cache.set('channel_name_' + user, self.channel_name)
 
     def chat_message(self, event):

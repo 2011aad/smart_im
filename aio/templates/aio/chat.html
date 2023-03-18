@@ -16,10 +16,13 @@
         const wsUrl = 'ws://' + window.location.host + '/ws/aio/' + chatName + '/';
 
         let chatSocket = new WebSocket(wsUrl);
-        chatSocket.send(JSON.stringify({
-            'method': 'set_user',
-            'user': Cookies.get('user')
-        }));
+
+        chatSocket.onopen = function(e) {
+            chatSocket.send(JSON.stringify({
+                'method': 'set_user',
+                'user': Cookies.get('user')
+            }));
+        };
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
