@@ -2,6 +2,8 @@ import json
 
 from channels.generic.websocket import WebsocketConsumer
 
+from send_message import send_msg
+
 
 class AioWsConsumer(WebsocketConsumer):
     def connect(self):
@@ -10,8 +12,13 @@ class AioWsConsumer(WebsocketConsumer):
     def disconnect(self, close_code):
         pass
 
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-        print("receive message: " + text_data)
-        self.send(text_data=json.dumps({"message": message}))
+    def receive(self, data):
+        json_data = json.loads(data)
+        message = json_data["message"]
+        print("receive message: " + data)
+        print("channel name: " + self.channel_name)
+        send_msg(self.channel_name, message["to"], message)
+        self.send(text_data = json.dumps({"message": "message sent to " + message["to"] + ": " + message}))
+
+    def chat_message(self, event):
+        self.send(text_data = event["message"])
