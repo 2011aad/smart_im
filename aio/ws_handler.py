@@ -1,8 +1,8 @@
 import json
-
+from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
-from . import send_message.send_msg
+from . import msg_sender
 
 
 class AioWsConsumer(WebsocketConsumer):
@@ -17,7 +17,7 @@ class AioWsConsumer(WebsocketConsumer):
         message = json_data["message"]
         print("receive message: " + data)
         print("channel name: " + self.channel_name)
-        send_msg(self.channel_name, message["to"], message)
+        async_to_sync(msg_sender.send_msg)(self.channel_name, message["to"], message)
         self.send(text_data = json.dumps({"message": "message sent to " + message["to"] + ": " + message}))
 
     def chat_message(self, event):
