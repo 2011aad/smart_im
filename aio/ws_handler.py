@@ -2,7 +2,7 @@ import json
 
 from channels.generic.websocket import WebsocketConsumer
 
-from send_message import send_msg
+from . import send_message.send_msg
 
 
 class AioWsConsumer(WebsocketConsumer):
