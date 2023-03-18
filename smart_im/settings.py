@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['119.28.136.240']
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne'
     'aio',
     'channels',
     'django.contrib.admin',
@@ -70,7 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'smart_im.wsgi.application'
-ASGI_APPLICATION = 'smart_im.wsgi.application'
+ASGI_APPLICATION = 'smart_im.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
